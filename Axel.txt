@@ -1,0 +1,7 @@
+exponente = 1
+for fila in range(1, 9):
+    for columna in range(1, 9):
+        resultado = 2 ** exponente
+        letra = chr(64 + columna)
+        print(f"{letra}{fila}: {resultado}")
+        exponente += 1
