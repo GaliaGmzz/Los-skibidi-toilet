@@ -52,10 +52,24 @@ class AsistenciaController:
             self.vista.chk_presente.value = False
             self.vista.txt_grupo.value = ""
             self.vista.txt_materia.value = ""
-            
+
             self.vista.page.update()
 
         except Exception as ex:
             self.vista.lbl_mensaje.value = str(ex) if str(ex) else "Error en los datos"
             self.vista.lbl_mensaje.color = "red"
             self.vista.page.update()
+
+    def eliminar_registros(self, e):
+        if len(self.lista_alumnos) == 0:
+            self.vista.lbl_mensaje.value = "No hay registros disponibles"
+            self.vista.lbl_mensaje.color = "red"
+
+            self.vista.page.update()
+            return
+
+        self.lista_alumnos.clear()
+        self.vista.lista_registros.controls.clear()
+        self.vista.lbl_mensaje.value = "Registros eliminados exitosamente"
+        self.vista.lbl_mensaje.color = "green"
+        self.vista.page.update()    

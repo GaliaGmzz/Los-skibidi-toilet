@@ -34,6 +34,11 @@ class AsistenciaView:
             width = 250
         )
 
+        self.btn_eliminar = ft.ElevatedButton(
+            "Eliminar Registro",
+            width = 250
+        )
+
         self.lbl_mensaje = ft.Text(
             value = "",
             size = 16
@@ -58,6 +63,7 @@ class AsistenciaView:
                 self.txt_materia,
                 self.chk_presente,
                 self.btn_registrar,
+                self.btn_eliminar,
                 self.lbl_mensaje,
 
                 ft.Text(

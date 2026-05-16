@@ -8,6 +8,7 @@ def main(page: ft.Page):
 
     controller = AsistenciaController(vista)
     vista.btn_registrar.on_click = controller.registrarAsistencia
+    vista.btn_eliminar.on_click = controller.eliminar_registros
 
     page.add(
         vista.contruirInterfaz()
