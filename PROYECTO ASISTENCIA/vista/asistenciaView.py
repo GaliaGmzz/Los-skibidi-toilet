@@ -15,6 +15,16 @@ class AsistenciaView:
             width = 400
         )
 
+        self.txt_grupo = ft.TextField(
+            label = "Grupo",
+            width = 400
+        )
+
+        self.txt_materia = ft.TextField(
+            label = "Materia",
+            width = 400
+        )
+
         self.chk_presente = ft.Checkbox(
             label = "Presente"
         )
@@ -44,6 +54,8 @@ class AsistenciaView:
                 ft.Divider(),
 
                 self.txt_nombre,
+                self.txt_grupo,
+                self.txt_materia,
                 self.chk_presente,
                 self.btn_registrar,
                 self.lbl_mensaje,

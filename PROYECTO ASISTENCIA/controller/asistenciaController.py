@@ -11,18 +11,32 @@ class AsistenciaController:
             # Obtener los valores
             nombre = self.vista.txt_nombre.value
             presente = self.vista.chk_presente.value
+            grupo = self.vista.txt_grupo.value
+            materia = self.vista.txt_materia.value
 
             if nombre == "":
                 self.vista.lbl_mensaje.value = "Debe escribir un nombre"
                 self.vista.lbl_mensaje.color = "red"
                 self.vista.page.update()
                 return
-            
+
+            if grupo == "":
+                self.vista.lbl_mensaje.value = "Debe escribir un grupo"
+                self.vista.lbl_mensaje.color = "red"
+                self.vista.page.update()
+                return
+
+            if materia == "":
+                self.vista.lbl_mensaje.value = "Debe escribir una materia"
+                self.vista.lbl_mensaje.color = "red"
+                self.vista.page.update()
+                return
+
             if len(nombre) > 10:
                 raise Exception("El nombre del alumno no debe exceder 10 caracteres")
             
             # Crear objeto alumno
-            alumno = Alumno(nombre, presente)
+            alumno = Alumno(nombre, presente, grupo, materia)
             self.lista_alumnos.append(alumno)
 
             # Mostrar listado
@@ -36,7 +50,9 @@ class AsistenciaController:
             # Limpiar campos
             self.vista.txt_nombre.value = ""
             self.vista.chk_presente.value = False
-
+            self.vista.txt_grupo.value = ""
+            self.vista.txt_materia.value = ""
+            
             self.vista.page.update()
 
         except Exception as ex:
