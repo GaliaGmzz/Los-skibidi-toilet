@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Resultados de Acta</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #eee; }
+    .chart-container { width: 80%; margin: 30px auto; }
+  </style>
+</head>
+<body>
+  <h1>Resultados de Acta</h1>
+
+  <!-- Subir archivo -->
+  <form id="formActa" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".jpg,.png,.jpeg" required>
+    <button type="submit">Procesar Acta</button>
+  </form>
+
+  <!-- Tabla -->
+  <table>
+    <thead>
+      <tr><th>Partido</th><th>Votos</th><th>Porcentaje</th></tr>
+    </thead>
+    <tbody id="tabla-votos"></tbody>
+  </table>
+
+  <!-- Gráficas -->
+  <div class="chart-container">
+    <canvas id="barChart"></canvas>
+  </div>
+  <div class="chart-container">
+    <canvas id="pieChart"></canvas>
+  </div>
+
+  <script>
+    document.getElementById("formActa").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+
+      const resp = await fetch("http://127.0.0.1:8000/procesar_acta/", {
+        method: "POST",
+        body: formData
+      });
+
+      if (!resp.ok) {
+        alert("Error al procesar el acta");
+        return;
+      }
+
+      const datos = await resp.json();
+      const desglose = datos.desglose_partidos;
+      const total = datos.total_votos;
+
+      // Llenar tabla
+      const tabla = document.getElementById("tabla-votos");
+      tabla.innerHTML = "";
+      for (const [partido, votos] of Object.entries(desglose)) {
+        const porcentaje = ((votos/total)*100).toFixed(2) + "%";
+        tabla.innerHTML += `<tr><td>${partido}</td><td>${votos}</td><td>${porcentaje}</td></tr>`;
+      }
+
+      // Gráfica de barras
+      new Chart(document.getElementById("barChart"), {
+        type: 'bar',
+        data: {
+          labels: Object.keys(desglose),
+          datasets: [{
+            label: 'Votos',
+            data: Object.values(desglose),
+            backgroundColor: ['#e63946','#457b9d','#2a9d8f','#f4a261','#8d99ae','#06d6a0','#ffb703']
+          }]
+        }
+      });
+
+      // Gráfica de pastel
+      new Chart(document.getElementById("pieChart"), {
+        type: 'pie',
+        data: {
+          labels: Object.keys(desglose),
+          datasets: [{
+            data: Object.values(desglose),
+            backgroundColor: ['#e63946','#457b9d','#2a9d8f','#f4a261','#8d99ae','#06d6a0','#ffb703']
+          }]
+        }
+      });
+    });
+  </script>
+</body>
+</html>
